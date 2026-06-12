@@ -1,0 +1,7 @@
+{
+  "name": "proyecto_test_front",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

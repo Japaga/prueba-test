@@ -1,0 +1,177 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button color="primary"></ion-menu-button>
+    </ion-buttons>
+    <ion-title color="primary">Empleados</ion-title>
+<ion-buttons slot="end">
+  <ion-button *ngIf="!mostrarFormulario" color="primary" slot="end" (click)="abrirFormulario()">
+    Añadir
+    <ion-icon slot="start" name="person-add"></ion-icon>
+  </ion-button>
+  <ion-button *ngIf="mostrarFormulario" (click)="resetForm()" color="warning" expand="full">
+    <ion-icon slot="start" name='refresh-outline'></ion-icon>
+      Reset
+  </ion-button>
+  <ion-button *ngIf="mostrarFormulario" (click)="cerrarFormulario()" color="danger" expand="full">
+    <ion-icon slot="start" name='close'></ion-icon>
+      Cancelar
+  </ion-button>
+</ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+<ng-container *ngIf="!mostrarFormulario">
+   <ion-searchbar
+    [(ngModel)]="filtroBusqueda"
+    (ionInput)="filtrarEmpleados()"
+    placeholder="Buscar empleado...  Nombre, apellidos o DNI">
+  </ion-searchbar>
+  <ion-list>
+  <ion-item *ngFor="let emp of empleadosFiltrados">
+    <ion-label color="primary" class="custom-label">
+      <h2>{{ emp.nombre }} {{ emp.apellidos }}</h2>
+      <p>{{ emp.dni }}</p>
+      </ion-label>
+  <ion-button color="warning" slot="end" (click)="editar(emp)">
+    Editar
+    <ion-icon slot="start" name="pencil-outline"></ion-icon>
+  </ion-button>
+  <ion-button color="danger" slot="end" (click)="confirmarEliminacion(emp)">
+    Eliminar
+    <ion-icon slot="start" name="trash-outline"></ion-icon>
+      </ion-button>
+      </ion-item>
+      </ion-list>
+  </ng-container>
+  <ng-container *ngIf="mostrarFormulario" >
+    
+  <ion-grid>
+      <ion-row>
+        <ion-col size="12" size-md="6">
+          <ion-item>
+            <ion-label color="primary" class="custom-label" position="stacked">Nombre</ion-label>
+            <ion-input [(ngModel)]="empleado.nombre"></ion-input>
+          </ion-item>
+        </ion-col>
+            
+        <ion-col size="12" size-md="6">
+          <ion-item>
+            <ion-label color="primary" class="custom-label" position="stacked">Apellidos</ion-label>
+            <ion-input [(ngModel)]="empleado.apellidos"></ion-input>
+            </ion-item>
+        </ion-col>
+      </ion-row>
+    
+      <ion-row>
+        <ion-col size="12" size-md="6">
+          <ion-item>
+            <ion-label color="primary" class="custom-label" position="stacked">DNI</ion-label>
+            <ion-input [(ngModel)]="empleado.dni" placeholder="12345678A" [disabled]="editando"></ion-input>
+          </ion-item>
+        </ion-col>
+            
+        <ion-col size="12" size-md="6">
+          <ion-item>
+  <ion-label color="primary" class="custom-label" position="stacked">
+    Fecha de nacimiento
+  </ion-label>
+
+  <ion-input
+    readonly
+    [value]="formatearFecha(empleado.fecha_nacimiento)">
+    <ion-button slot="end" id="open-date">
+    Seleccionar
+  </ion-button>
+  </ion-input>
+</ion-item>
+    <ion-modal [enterAnimation]="enterAnimation" [leaveAnimation]="leaveAnimation" class="date-modal" trigger="open-date">
+          <ng-template>
+            <ion-datetime 
+      presentation="date"
+      show-default-buttons="true" 
+      done-text="Aceptar" 
+      cancel-text="Cancelar"
+      display-format="DD/MM/YYYY"
+      [value]="empleado.fecha_nacimiento"
+      (ionChange)="onDateChange($event)">
+            </ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-col>
+    </ion-row>
+    
+      <ion-row>
+        <ion-col size="12" size-md="6">
+          <ion-item>
+            <ion-label color="primary" class="custom-label" position="stacked">Edad</ion-label>
+            <ion-input readonly [value]="empleado.edad ? empleado.edad + ' años' : ''"></ion-input>
+          </ion-item>
+        </ion-col>
+            
+        <ion-col size="12" size-md="6">
+          <ion-item>
+            <ion-label color="primary" class="custom-label" position="stacked">Teléfono</ion-label>
+            <ion-input inputmode="numeric" minlength="9" maxlength="9" type="tel" [(ngModel)]="empleado.telefono"></ion-input>
+            </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label color="primary" class="custom-label" position="stacked">Dirección</ion-label>
+            <ion-input [(ngModel)]="empleado.direccion"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="12" size-md="6">
+          <ion-item>
+            <ion-label color="primary" class="custom-label" position="stacked">Email</ion-label>
+            <ion-input type="email" [(ngModel)]="empleado.email" placeholder="ejemplo@email.com"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size="12" size-md="6">
+          <ion-item>
+            <ion-label color="primary" class="custom-label" position="stacked">Horas diarias</ion-label>
+            <ion-input [(ngModel)]="empleado.horas_diarias"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="12" size-md="6">
+          <ion-item>
+          <ion-label color="primary" class="custom-label" position="stacked">Transporte asignado</ion-label>
+          <ion-input ></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size="12" size-md="6">
+          <ion-item>
+            <ion-label color="primary" class="custom-label" position="stacked">Vehículo asignado</ion-label>
+            <ion-input ></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+  </ion-grid>
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="6" class="ion-text-center">
+    <ion-button class="btn-save" [color]="editando ? 'warning' : 'primary'" expand="block" (click)="guardarEmpleado()">
+    <ion-icon slot="start" [name]="editando ? 'pencil-outline' : 'save'"></ion-icon>
+      {{ editando ? 'Editar' : 'Crear' }}
+    </ion-button>
+  </ion-col>
+  <ion-col size="6" class="ion-text-center">
+  <ion-button class="btn-save" (click)="cerrarFormulario()" color="danger" expand="block">
+    <ion-icon slot="start" name='close'></ion-icon>
+      Cancelar
+  </ion-button>
+  </ion-col>
+    </ion-row>
+  </ion-grid>
+</ng-container>
+</ion-content>
+
+

@@ -1,0 +1,265 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button color="primary"></ion-menu-button>
+    </ion-buttons>
+    <ion-title color="primary" class="custom-label">Vehículos</ion-title>
+    <ion-buttons slot="end">
+  <ion-button *ngIf="!mostrarFormulario" color="primary" slot="end" (click)="abrirFormulario()">
+    Añadir
+    <ion-icon slot="start" name="car"></ion-icon>
+  </ion-button>
+  <ion-button *ngIf="mostrarFormulario" (click)="resetForm()" color="warning" expand="full">
+            <ion-icon slot="start" name='refresh-outline'></ion-icon>
+              Reset
+  </ion-button>
+  <ion-button *ngIf="mostrarFormulario" (click)="cerrarFormulario()" color="danger" expand="full">
+            <ion-icon slot="start" name='close'></ion-icon>
+              Cancelar
+  </ion-button>
+</ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+<ng-container *ngIf="!mostrarFormulario">
+  <ion-searchbar
+  placeholder="Buscar vehículo..."
+  [(ngModel)]="textoBusqueda"
+  (ionInput)="filtrarVehiculos()">
+</ion-searchbar>
+<ion-list>
+  <ion-item *ngFor="let v of vehiculosFiltrados">
+    <ion-label>
+      <h2>{{ v.matricula }}</h2>
+      <p>{{ v.marca }} - {{ v.modelo }}</p>
+    </ion-label>
+    <ion-button color="warning" slot="end" (click)="editarFormulario(v)">
+    Editar
+    <ion-icon slot="start" name="pencil-outline"></ion-icon>
+  </ion-button>
+  <ion-button color="danger" slot="end" (click)="confirmarEliminacion(v)">
+    Eliminar
+    <ion-icon slot="start" name="trash-outline"></ion-icon>
+      </ion-button>
+  </ion-item>
+</ion-list>
+</ng-container>
+
+  <ng-container *ngIf="mostrarFormulario">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="6">
+            <ion-item>
+              <ion-label color="primary" class="custom-label" position="stacked">Matricula</ion-label>
+              <ion-input [(ngModel)]="vehiculo.matricula" autocapitalize="characters"></ion-input>
+            </ion-item>  
+      </ion-col>
+      <ion-col size="12" size-md="6">
+            <ion-item>
+              <ion-label color="primary" class="custom-label" position="stacked">Marca</ion-label>
+              <ion-input [(ngModel)]="vehiculo.marca" ></ion-input>
+            </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" size-md="6">
+        <ion-item>
+          <ion-label color="primary" class="custom-label" position="stacked">Modelo</ion-label>
+          <ion-input [(ngModel)]="vehiculo.modelo" ></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" size-md="6">
+        <ion-item>
+          <ion-label color="primary" class="custom-label" position="stacked">Fecha de matriculación</ion-label>
+          <ion-input readonly
+          [(ngModel)]="vehiculo.fecha_matriculacion" >
+          <ion-button slot="end" id="open-fechaMatriculacion">
+            Seleccionar
+          </ion-button>
+        </ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-modal [enterAnimation]="enterAnimation" [leaveAnimation]="leaveAnimation" class="date-modal" trigger="open-fechaMatriculacion">
+          <ng-template>
+            <ion-datetime
+            presentation="date"
+            show-default-buttons="true" 
+            done-text="Aceptar" 
+            cancel-text="Cancelar"
+            (ionChange)="onDateChange($event, 'fechaMatriculacion')">
+            </ion-datetime>
+          </ng-template>
+        </ion-modal>      
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" size-md="6">
+        <ion-item>
+          <ion-label color="primary" class="custom-label" position="stacked">Tipo de combustible</ion-label>
+          <ion-select
+                [(ngModel)]="vehiculo.tipo_combustible"
+                interface="popover"
+                placeholder="Selecciona un tipo">
+              <ion-select-option
+              *ngFor="let tipo of tiposCombustible"
+                [value]="tipo">
+                {{ tipo }}
+            </ion-select-option>
+          </ion-select>      
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" size-md="6">
+        <ion-item>
+          <ion-label color="primary" class="custom-label" position="stacked">Tipo de Vehículo</ion-label>
+            <ion-select
+                [(ngModel)]="vehiculo.tipo_vehiculo"
+                interface="popover"
+                placeholder="Selecciona un tipo">
+              <ion-select-option
+              *ngFor="let tipo of tiposVehiculos"
+                [value]="tipo">
+                {{ tipo }}
+            </ion-select-option>
+          </ion-select>      
+        </ion-item>
+      </ion-col>      
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" size-md="6">
+        <ion-item>
+          <ion-label color="primary" class="custom-label" position="stacked">Fecha de mantenimiento</ion-label>
+          <ion-input readonly [(ngModel)]="vehiculo.fecha_ultima_revision" >
+            <ion-button slot="end" id="open-mantenimiento">Seleccionar</ion-button>
+          </ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-modal [enterAnimation]="enterAnimation" [leaveAnimation]="leaveAnimation" class="date-modal" trigger="open-mantenimiento">
+          <ng-template>
+            <ion-datetime
+            presentation="date"
+            show-default-buttons="true" 
+            done-text="Aceptar" 
+            cancel-text="Cancelar"
+            (ionChange)="onDateChange($event, 'mantenimiento')">
+            </ion-datetime>
+          </ng-template>
+        </ion-modal>
+      <ion-col size="12" size-md="6">
+        <ion-item>
+          <ion-label color="primary" class="custom-label" position="stacked">Kilómetros del último mantenimiento</ion-label>
+          <ion-input [(ngModel)]="vehiculo.kilometros_ultima_revision" type="number"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" size-md="6">
+        <ion-item>
+          <ion-label color="primary" class="custom-label" position="stacked">Fecha de la revisión del tacógrafo</ion-label>
+          <ion-input 
+          readonly [(ngModel)]="vehiculo.fecha_ultima_tacografo" >
+        <ion-button slot="end" id="open-tacografo">Seleccionar</ion-button></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-modal [enterAnimation]="enterAnimation" [leaveAnimation]="leaveAnimation" class="date-modal" trigger="open-tacografo">
+          <ng-template>
+            <ion-datetime 
+      presentation="date"
+      show-default-buttons="true" 
+      done-text="Aceptar" 
+      cancel-text="Cancelar"
+      (ionChange)="onDateChange($event, 'tacografo')">
+            </ion-datetime>
+          </ng-template>
+        </ion-modal>
+      <ion-col size="12" size-md="6">
+        <ion-item>
+          <ion-label color="primary" class="custom-label" position="stacked">Número de plazas de asientos</ion-label>
+          <ion-input [(ngModel)]="vehiculo.plazas_sentados" type="number"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" size-md="6">
+        <ion-item>
+          <ion-label color="primary" class="custom-label" position="stacked">Números de plazas adaptadas</ion-label>
+          <ion-input [(ngModel)]="vehiculo.plazas_sillas" type="number"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" size-md="6">
+        <ion-item>
+          <ion-label color="primary" class="custom-label" position="stacked">Número de bastidor</ion-label>
+          <ion-input [(ngModel)]="vehiculo.numero_bastidor" ></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" size-md="6">
+        <ion-item>
+          <ion-label color="primary" class="custom-label" position="stacked">Kilometros</ion-label>
+          <ion-input [(ngModel)]="vehiculo.kilometros" type="number"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" size-md="6">
+        <ion-item>
+          <ion-label color="primary" class="custom-label" position="stacked">Fecha de próxima ITV</ion-label>
+          <ion-input readonly 
+          [(ngModel)]="vehiculo.fecha_ultima_itv" >
+          <ion-button slot="end" id="open-fechaItv">
+            Seleccionar
+          </ion-button>
+        </ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-modal [enterAnimation]="enterAnimation" [leaveAnimation]="leaveAnimation" class="date-modal" trigger="open-fechaItv">
+          <ng-template>
+            <ion-datetime
+            presentation="date"
+            show-default-buttons="true" 
+            done-text="Aceptar" 
+            cancel-text="Cancelar"
+            (ionChange)="onDateChange($event, 'fechaItv')">
+            </ion-datetime>
+          </ng-template>
+        </ion-modal>
+    <ion-row>
+      <ion-col size="12" size-md="6">
+        <ion-item>
+          <ion-label color="primary" class="custom-label" position="stacked">Centro asignado</ion-label>
+          <ion-input [(ngModel)]="vehiculo.centro_asignado" ></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" size-md="6">
+        <ion-item>
+          <ion-label color="primary" class="custom-label" position="stacked">Empleado asignado?</ion-label>
+          <ion-input></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" size-md="6">
+        <ion-item>
+          <ion-label color="primary" class="custom-label" position="stacked">Transporte asignado?</ion-label>
+          <ion-input></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6" class="ion-text-center">
+          <ion-button [color]="editando ? 'warning' : 'primary' " class="btn-save" (click)="guardarVehiculo()" color="primary" expand="block">
+            <ion-icon slot="start" [name]="editando ? 'pencil-outline' : 'save'"></ion-icon>
+             {{ editando ? 'Editar' : 'Crear'}}
+        </ion-button>
+      </ion-col>
+      <ion-col size="6" class="ion-text-center">
+          <ion-button class="btn-save" (click)="cerrarFormulario()" color="danger" expand="block">
+            <ion-icon slot="start" name='close'></ion-icon>
+              Cancelar
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  </ng-container>
+</ion-content>
+

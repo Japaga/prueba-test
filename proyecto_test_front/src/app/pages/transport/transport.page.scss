@@ -1,0 +1,262 @@
+.date-modal ion-datetime {
+  display: block;
+  margin: 0 auto;
+}
+.date-modal {
+  --width: 300px;
+  --height: 252px;
+  --border-radius: 12px;
+  --backdrop-opacity: 0.6; 
+}
+
+.custom-label {
+  font-size: 16px;
+  font-weight: bold;    
+}
+
+ion-item {
+  --border-radius: 10px;
+  --padding-start: 10px;
+  --padding-end: 10px;
+  margin-bottom: 2px;
+}
+
+.agenda-grid {
+  margin-top: 20px;
+}
+
+ion-datetime {
+   width: 100%;
+}
+
+ion-button {
+  --border-radius: 5px;
+}
+
+.btn-save {
+  --border-radius: 5px;
+}
+
+.bloque-row {
+
+  align-items: center;
+
+  margin-bottom: 8px;
+
+}
+
+.bloque-btn {
+
+  height: 45px;
+
+}
+
+.botonesCalendario ion-button{
+
+  padding: 5px;
+  margin: 10px;
+
+}
+
+/* ===== CALENDARIO ===== */
+
+.calendar-wrapper {
+
+  width: 100%;
+  padding: 10px;
+
+}
+
+/* CABECERA */
+
+.dias-semana {
+
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin-bottom: 10px;
+
+}
+
+.dia-semana {
+
+  text-align: center;
+  font-weight: bold;
+  color: var(--ion-color-primary);
+  font-size: 14px;
+
+}
+
+/* GRID */
+
+.calendar-grid {
+
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+
+}
+
+/* DÍA */
+
+.calendar-day {
+
+  height: 48px;
+  border: none;
+  border-radius: 12px;
+  background: var(--ion-color-primary);
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+
+  transition: 0.2s;
+
+}
+
+.calendar-day:active {
+
+  transform: scale(0.95);
+
+}
+
+/* DÍA SELECCIONADO */
+
+.calendar-day.selected {
+
+  background: var(--ion-color-warning);
+  color: black;
+
+}
+
+/* VACÍOS */
+
+.empty-day {
+
+  height: 48px;
+  border-radius: 5px;
+  background: transparent;
+
+}
+
+/* ===== AGENDA ===== */
+
+.agenda-container {
+
+  margin-top: 20px;
+  padding: 10px;
+
+}
+
+.agenda-row {
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 10px;
+  margin-bottom: 8px;
+
+  border-radius: 5px;
+
+  background: rgba(255,255,255,0.05);
+
+}
+
+.hora {
+
+  font-weight: bold;
+  width: 70px;
+
+}
+
+/* ESTADOS */
+
+.estado {
+
+  padding: 8px 14px;
+  border-radius: 5px;
+
+  font-weight: bold;
+  text-transform: capitalize;
+
+}
+
+.estado.libre {
+
+  background: #2dd36f;
+  color: white;
+
+}
+
+.estado.ocupado {
+
+  background: #eb445a;
+  color: white;
+
+}
+
+.estado.pendiente {
+
+  background: #ffc409;
+  color: black;
+
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 768px) {
+
+  .calendar-day {
+
+    height: 40px;
+    font-size: 12px;
+
+  }
+
+  .dia-semana {
+
+    font-size: 11px;
+
+  }
+
+  .agenda-row {
+
+    padding: 8px;
+
+  }
+
+  .hora {
+
+    width: 60px;
+    font-size: 13px;
+
+  }
+
+}
+
+.transporte-card {
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+
+.info-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0;
+  font-size: 14px;
+  color: #444;
+
+  ion-icon {
+  font-size: 18px;
+  color: var(--ion-color-primary);
+}
+}
+
+.acciones {
+  display: flex;
+  justify-content: flex-end; 
+  gap: 5px;
+}
+
+

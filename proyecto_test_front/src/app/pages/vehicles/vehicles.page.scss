@@ -1,0 +1,27 @@
+.custom-label {
+  font-size: 18px;
+  font-weight: bold;    
+}
+
+ion-item {
+  --border-radius: 10px;
+  --padding-start: 10px;
+  --padding-end: 10px;
+  margin-bottom: 2px;
+}
+
+ion-button {
+  --border-radius: 5px;
+}
+
+ion-datetime {
+   width: 100%;
+}
+
+.date-modal {
+  --width: 320px;
+  --height: 390px;
+  --border-radius: 12px;
+  --backdrop-opacity: 0.6;
+  --box-shadow: 0 10px 30px rgba(0,0,0,0.25);  
+}

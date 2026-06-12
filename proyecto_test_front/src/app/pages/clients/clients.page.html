@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+
+    <ion-title>Inicio</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+  <ion-item>
+    <ion-input placeholder="Nombre" [(ngModel)]="nombre"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input placeholder="Email" [(ngModel)]="email"></ion-input>
+  </ion-item>
+
+  <ion-button expand="full" (click)="guardarCliente()">
+    {{ editando ? 'Actualizar' : 'Crear' }}
+  </ion-button>
+
+  <ion-list>
+    <ion-item *ngFor="let cliente of clientes">
+      <ion-label>
+        <h2>{{ cliente.nombre }}</h2>
+        <p>{{ cliente.email }}</p>
+      </ion-label>
+
+      <ion-button color="warning" (click)="editar(cliente)">
+        Editar
+      </ion-button>
+
+      <ion-button color="danger" (click)="eliminar(cliente.id)">
+        Eliminar
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+</ion-content>
