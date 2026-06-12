@@ -1,5 +1,5 @@
 const express = require('express');
-const app = express();
+const app = express(); 
 const db = require('./db/db.js');
 const runMigrations = require('./migrations/migrations.js');
 const cors = require('cors');
